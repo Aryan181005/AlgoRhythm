@@ -137,6 +137,84 @@ const App = () => {
     }
   };
 
+  // Bubble Sort
+  const bubbleSort = async (arr,n) => {
+    for(let i = 0; i < n-1; i++){
+      for(let j = 0; j < n-isSorting; j++){
+        if(arr[j].value > arr[j+1].value){
+          setActive([j,j+1]);
+          await sleep(speed);
+          [arr[j],arr[j+1]] = [arr[j+1],arr[j]];
+          setArray([...arr]);
+          await sleep(speed);
+        }
+      }
+      setActive([]);
+    }
+  }
+
+  // HeapSort
+  const heapify = async (arr,n,i) => {
+    let largest = i;
+    let left = 2*i+1;
+    let right = 2*i+2;
+
+    setActive([
+      i,
+      left < n ? left : -1,
+      right < n ? right : -1,
+    ]);
+    await sleep(speed);
+
+    if(left < n && arr[left].value > arr[largest].value){
+      largest = left;
+    }
+    if(right < n && arr[right].value > arr[largest].value){
+      largest = right
+    }
+
+    if(i !== largest){
+      setActive([i,largest]);
+      await sleep(speed);
+
+      [arr[i],arr[largest]] = [arr[largest],arr[i]];
+      setArray([...arr]);
+
+      await sleep(speed);
+      await heapify(arr,n,largest);
+    }
+  };
+  const heapSort = async (arr) => {
+    let n = arr.length;
+    
+    // Build Max Heap
+    for(let i = Math.floor(n / 2)-1; i >= 0; i--){
+      await heapify(arr,n,i);
+    }
+
+    // Extract All Elements
+    for(let i = n-1; i > 0; i--){
+      // Move current root to end
+      setPIndex(0);
+      setActive([0,i]);
+      await sleep(speed);
+
+      [arr[0],arr[i]] = [arr[i],arr[0]];
+      setArray([...arr]);
+      setPIndex(null);
+      setActive([]);
+
+      setSorted((prev) => [...prev,i]);
+      await sleep(speed);
+
+      //Heapify reduced Heap  --  root element is now sorted -- reduce heap size by 1
+      await heapify(arr,i,0);
+    }
+
+    setSorted((prev) => [...prev,0]);
+    return arr;
+  };
+
   // Start Sorting
   const startSorting = async () => {
     if (isSorting) return;
@@ -151,10 +229,16 @@ const App = () => {
     if (algo === "merge") {
       await mergeSort(newArr, 0, newArr.length - 1);
     }
+    if (algo === "bubble") {
+      await bubbleSort(newArr, newArr.length - 1);
+    }
+    if (algo === "heap") {
+      await heapSort(newArr);
+    }
     
     for (let i = 0; i < array.length; i++) {
       setSorted((prev) => [...prev, i]);
-      await sleep(100);
+      await sleep(200);
     }
 
     setIsSorting(false);
@@ -186,18 +270,44 @@ const App = () => {
         >
           MergeSort
         </button>
+
+        <button
+          disabled={isSorting}
+          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
+          ${algo === "bubble" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
+          onClick={() => {
+            setAlgo("bubble");
+            generateArray();
+          }}
+        >
+          BubbleSort
+        </button>
+
+        <button
+          disabled={isSorting}
+          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
+          ${algo === "heap" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
+          onClick={() => {
+            setAlgo("heap");
+            generateArray();
+          }}
+        >
+          HeapSort
+        </button>
+
       </div>
 
       <h1 className="text-3xl font-bold mb-20">{algoNames[algo]} Visualiser</h1>
 
       {/* Array Bars */}
-      <div className="flex items-end gap-3 bg-zinc-800 px-30 pt-10 mb-10 rounded-2xl min-h-[400px]">
+      <div className="flex items-end gap-3 bg-zinc-800 px-30 pt-10 mb-10 rounded-2xl min-h-[400px] max-w-screen">
         {array.map((item, idx) => {
           let color = "bg-teal-500";
 
           if (sorted.includes(idx)) color = "bg-green-500";
           else if (pIndex === idx) color = "bg-red-500";
           else if (active.includes(idx)) color = "bg-yellow-500";
+
 
           return (
             <motion.div
