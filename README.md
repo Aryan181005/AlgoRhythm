@@ -6,7 +6,7 @@ An interactive and visually engaging **sorting algorithm visualizer** built with
 
 ## 🌐 Live Demo
 
-> *(Add your deployed link here — Netlify / Vercel)*
+> *https://algorhythm-lab.vercel.app/*
 
 ---
 
