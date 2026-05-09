@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+*{
+    font-family: Matter;
+}
+
+body{
+    background: #18181B;
+}

@@ -18,16 +18,34 @@ An interactive and visually engaging **sorting algorithm visualizer** built with
 
 ## ✨ Features
 
-* 🎯 **Multiple Algorithms**
+* 🎯 **Sorting Algorithms**
 
   * Quick Sort
     *(Easily extendable to more)*
+
+
+* 🎯 **Searching Algorithms**
+
+  * Linear Search
+    *(Easily extendable to more)*
+
+
+* 🎯 **Backtracking Algorithms**
+
+  * Travelling Salesman Problem
+    *(Easily extendable to more)*
+
+
+* 🎯 **Data Structures**
+
+  * Linked List
+    *(Easily extendable to more)*
+
 
 * 🎨 **Beautiful Animations**
 
   * Smooth swapping using Framer Motion
   * Color-coded states:
-
     * 🔴 Pivot
     * 🟡 Active comparisons
     * 🟢 Sorted elements
