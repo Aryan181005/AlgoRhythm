@@ -9,6 +9,8 @@ import Tree from './components/Tree';
 import Graph from './components/Graph';
 import DP from './components/DP';
 import { FiChevronsLeft } from "react-icons/fi";
+import SwitchButton from './components/SwitchButton';
+import { Switch } from 'react-aria-components';
 
 
 
@@ -22,8 +24,8 @@ const App = () => {
     "Linked List" : <LinkedList />,
     Stack : <Stack />,
     Queue : <Queue />,
-    Tree : <Tree />,
-    Graph : <Graph />,
+    Trees : <Tree />,
+    Graphs : <Graph />,
     DP : <DP />,
 
   }

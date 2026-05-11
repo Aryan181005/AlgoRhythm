@@ -43,16 +43,17 @@ const Hero = ({setCategory}) => {
     },
     {
       title: "DP",
-      description: "Break down complex problems into smaller subproblems.",
+      description: "Break down complex problems into smaller subproblems using Dynamic Programming.",
       icon: "⚡",
     },
   ];
 
   const [search, setSearch] = useState("");
   
-  const filteredCards = categories.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCards = categories.filter((item) => (
+    item.title.toLowerCase().includes(search.toLowerCase()) 
+    || item.description.toLowerCase().includes(search.toLowerCase())
+  ));
 
   return (
     <div className="text-white px-6 py-10 min-h-screen">
@@ -70,12 +71,12 @@ const Hero = ({setCategory}) => {
         </div>
 
         {/* Search Bar */}
-        <div className="max-w-2xl mx-auto mb-15">
+        <div className="mx-auto mb-15">
           <input 
             type="text"
             placeholder="Search algorithms..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-800/70 px-5 py-4 rounded-2xl text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg"
+            className="w-100 bg-slate-800/70 px-5 py-4 rounded-full text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg focus:w-full duration-300"
           />
         </div>
 
@@ -84,21 +85,21 @@ const Hero = ({setCategory}) => {
           {filteredCards.map((category,idx) => (
             <button key={idx}
             onClick={() => setCategory(category.title)}
-            className="group text-left rounded-3xl p-10 cursor-pointer border border-slate-800 bg-slate-900/70 hover:border-cyan-600 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 duration-200"
+            className="group text-left rounded-3xl p-10 cursor-pointer border border-slate-800 bg-zinc-800 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-500/20 hover:-translate-y-2 duration-200"
             >
               <div className="flex gap-6 mb-5 justify-start items-center">
                 <div className="text-3xl group-hover:scale-110 transition-transform duration-200">
                   {category.icon}
                 </div>
-                <h2 className="group-hover:text-cyan-500 text-3xl font-extrabold ease-in-out duration-200">
+                <h2 className="group-hover:text-teal-500 text-3xl font-extrabold ease-in-out duration-200">
                   {category.title}
                 </h2>
               </div>
-              <p className="text-lg mb-4">
+              <p className="text-base mb-4">
                 {category.description}
               </p>
-              <div>
-                Explore
+              <div className="group-hover:text-blue-400 duration-200 relative">
+                <span className="absolute opacity-0 group-hover:opacity-100">Explore → </span>
               </div>
             </button>
           ))}

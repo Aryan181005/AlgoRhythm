@@ -2,7 +2,11 @@ import React from 'react'
 
 const Stack = () => {
   return (
-    <div>Stack</div>
+    <div>
+      <div>
+        
+      </div>
+    </div>
   )
 }
 

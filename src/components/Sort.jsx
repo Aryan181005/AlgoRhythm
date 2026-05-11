@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "@mui/joy/Button";
 import Slider from "@mui/joy/Slider";
+import SwitchButton from "./SwitchButton";
 
-const Sort = () => {
+const Sort = ({setAlgo}) => {
   // State Definitions
   const [array, setArray] = useState([
     { id: 1, value: 10 },
@@ -20,7 +21,6 @@ const Sort = () => {
   const [sorted, setSorted] = useState([]); // Index Values - Update color to show which elements are sorted - GREEN
   const [speed, setSpeed] = useState(400); // Pause Animation before and after changes for given time
   const [isSorting, setIsSorting] = useState(false); // State to prevent another sorting when one is ongoing
-  const [algo, setAlgo] = useState("quick"); // This stores which algo will be used
   const algoNames = {
     quick: "QuickSort",
     merge: "MergeSort",
@@ -247,19 +247,9 @@ const Sort = () => {
     <div className="min-h-screen flex flex-col bg-zinc-900 text-white items-center justify-center p-6">
       {/* Sort Switch Buttons */}
       <div className="flex gap-10 justify-center items-center mb-20">
-        <button
-          disabled={isSorting}
-          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
-          ${algo === "quick" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
-          onClick={() => {
-            setAlgo("quick");
-            generateArray();
-          }}
-        >
-          QuickSort
-        </button>
+        <SwitchButton title='QuickSort' />
 
-        <button
+        {/* <button
           disabled={isSorting}
           className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
           ${algo === "merge" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
@@ -293,17 +283,17 @@ const Sort = () => {
           }}
         >
           HeapSort
-        </button>
+        </button> */}
       </div>
 
       {/* Sorting Name Heading */}
-      <h1 className="text-3xl font-bold mb-10">
+      {/* <h1 className="text-3xl font-bold mb-10">
         Here's how <span className="text-teal-500">{algoNames[algo]}</span>{" "}
         works
-      </h1>
+      </h1> */}
 
       {/* Array Bars */}
-      <div className="flex items-end gap-3 bg-zinc-800 px-30 pt-10 mb-10 rounded-2xl min-h-[400px] max-w-screen">
+      <div className="flex items-end gap-3 bg-zinc-800 px-30 pt-10 mb-10 rounded-2xl min-h-100 max-w-screen">
         {array.map((item, idx) => {
           let color = "bg-teal-500";
 
