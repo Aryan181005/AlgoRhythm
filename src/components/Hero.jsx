@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import SocialLogo from "./SocialLogo";
+import insta from "../assets/insta.svg";
+import github from "../assets/github.svg";
+import stack from "../assets/stack.svg";
 
 const Hero = ({setCategory}) => {
   const categories = [
@@ -71,13 +75,18 @@ const Hero = ({setCategory}) => {
         </div>
 
         {/* Search Bar */}
-        <div className="mx-auto mb-15">
+        <div className="mx-auto mb-15 flex flex-col lg:flex-row gap-5 justify-between items-center">
           <input 
             type="text"
             placeholder="Search algorithms..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-100 bg-slate-800/70 px-5 py-4 rounded-full text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg focus:w-full duration-300"
+            className="w-3/5 lg:w-100 bg-slate-800/70 px-5 py-4 rounded-full text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg focus:w-full lg:focus:w-1/2 duration-300"
           />
+          <div className="flex justify-evenly items-center gap-5 lg:gap-10 cursor-pointer">
+            <SocialLogo title={github} link="https://github.com/Aryan181005" />
+            <SocialLogo title={stack} link="https://github.com/Aryan181005" />
+            <SocialLogo title={insta} link="https://github.com/Aryan181005" />
+          </div>
         </div>
 
         {/* Category Cards */}

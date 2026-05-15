@@ -16,10 +16,11 @@ import { Switch } from 'react-aria-components';
 
 const App = () => {
 
+  const [algo,setAlgo] = useState("quick");
   const [category,setCategory] = useState("");
 
   const componentMap = {
-    Sorting : <Sort />,
+    Sorting : <Sort algo={algo} setAlgo={setAlgo}/>,
     Searching : <Search />,
     "Linked List" : <LinkedList />,
     Stack : <Stack />,

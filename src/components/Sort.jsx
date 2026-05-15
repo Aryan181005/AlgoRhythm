@@ -1,10 +1,13 @@
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import Button from "@mui/joy/Button";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "@mui/joy/Slider";
 import SwitchButton from "./SwitchButton";
+import { IoCodeSlashSharp } from "react-icons/io5";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import { algoData } from "../data/algoData";
+import AlgoInfo from "./AlgoInfo";
 
-const Sort = ({setAlgo}) => {
+const Sort = ({ algo, setAlgo }) => {
   // State Definitions
   const [array, setArray] = useState([
     { id: 1, value: 10 },
@@ -27,6 +30,18 @@ const Sort = ({setAlgo}) => {
     heap: "HeapSort",
     bubble: "BubbleSort",
   };
+  const data = algoData[algo];
+  const [lang, setLang] = useState("java");
+  const [dispCode, setDispCode] = useState(false);
+  const [dispInfo, setDispInfo] = useState(false);
+  const infoCodeRef = useRef(null);
+  useEffect(() => {
+    if (dispCode || dispInfo) {
+      infoCodeRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [dispCode, dispInfo]);
 
   // Waiting time ( will resolve after 'ms' time )
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -224,14 +239,11 @@ const Sort = ({setAlgo}) => {
     if (algo === "quick") {
       await quickSort(newArr, 0, newArr.length - 1);
       setSorted([...Array(array.length).keys()]);
-    }
-    if (algo === "merge") {
+    } else if (algo === "merge") {
       await mergeSort(newArr, 0, newArr.length - 1);
-    }
-    if (algo === "bubble") {
+    } else if (algo === "bubble") {
       await bubbleSort(newArr, newArr.length - 1);
-    }
-    if (algo === "heap") {
+    } else if (algo === "heap") {
       await heapSort(newArr);
     }
 
@@ -243,131 +255,198 @@ const Sort = ({setAlgo}) => {
     setIsSorting(false);
   };
 
+  const handleAlgoChange = (newAlgo) => {
+    setAlgo(newAlgo);
+    generateArray();
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-900 text-white items-center justify-center p-6">
+    <div className="min-h-screen w-full flex flex-col bg-zinc-900 text-white items-center justify-center px-4 py-10 lg:p-30 overflow-x-hidden">
       {/* Sort Switch Buttons */}
-      <div className="flex gap-10 justify-center items-center mb-20">
-        <SwitchButton title='QuickSort' />
-
-        {/* <button
-          disabled={isSorting}
-          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
-          ${algo === "merge" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
-          onClick={() => {
-            setAlgo("merge");
-            generateArray();
-          }}
-        >
-          MergeSort
-        </button>
-
-        <button
-          disabled={isSorting}
-          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
-          ${algo === "bubble" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
-          onClick={() => {
-            setAlgo("bubble");
-            generateArray();
-          }}
-        >
-          BubbleSort
-        </button>
-
-        <button
-          disabled={isSorting}
-          className={`px-5 py-3 rounded-lg cursor-pointer hover: active:scale-80 duration-200 
-          ${algo === "heap" ? "bg-teal-500 text-zinc-900" : "bg-zinc-800"}`}
-          onClick={() => {
-            setAlgo("heap");
-            generateArray();
-          }}
-        >
-          HeapSort
-        </button> */}
+      <div className="flex flex-wrap gap-5 lg:gap-10 justify-center items-center mb-10 lg:mb-20 mt-10 lg:mt-0">
+        <SwitchButton
+          title="QuickSort"
+          algo={algo}
+          setAlgo={setAlgo}
+          algoName="quick"
+          onAlgoChange={handleAlgoChange}
+        />
+        <SwitchButton
+          title="MergeSort"
+          algo={algo}
+          setAlgo={setAlgo}
+          algoName="merge"
+          onAlgoChange={handleAlgoChange}
+        />
+        <SwitchButton
+          title="BubbleSort"
+          algo={algo}
+          setAlgo={setAlgo}
+          algoName="bubble"
+          onAlgoChange={handleAlgoChange}
+        />
+        <SwitchButton
+          title="HeapSort"
+          algo={algo}
+          setAlgo={setAlgo}
+          algoName="heap"
+          onAlgoChange={handleAlgoChange}
+        />
       </div>
 
-      {/* Sorting Name Heading */}
-      {/* <h1 className="text-3xl font-bold mb-10">
-        Here's how <span className="text-teal-500">{algoNames[algo]}</span>{" "}
-        works
-      </h1> */}
+      {/* Visualizer */}
+      <div className="flex flex-col lg:flex-row items-center gap-5 lg:gap-15 w-full lg:w-auto">
+        <div className="flex flex-col justify-center items-center">
+          {/* Bars Container */}
+          <div className="bg-zinc-800 rounded-2xl mb-10 w-full max-w-full overflow-x-auto">
+            {/* Code & Info Buttons */}
+            <div className="flex justify-end w-full p-8 gap-5">
+              <button
+                className="bg-zinc-900 p-3 rounded-full cursor-pointer duration-200 active:scale-75"
+                onClick={() => setDispCode(!dispCode)}
+              >
+                <IoCodeSlashSharp />
+              </button>
+              <button
+                className="bg-zinc-900 p-3 rounded-full cursor-pointer duration-200 active:scale-75"
+                onClick={() => setDispInfo(!dispInfo)}
+              >
+                <IoInformationCircleOutline />
+              </button>
+            </div>
+            {/* Array Bars */}
+            <div className="flex items-end gap-2 lg:gap-5 w-max min-w-full px-4 lg:px-30 min-h-75">
+              {array.map((item, idx) => {
+                let color = "bg-teal-500";
 
-      {/* Array Bars */}
-      <div className="flex items-end gap-3 bg-zinc-800 px-30 pt-10 mb-10 rounded-2xl min-h-100 max-w-screen">
-        {array.map((item, idx) => {
-          let color = "bg-teal-500";
+                if (sorted.includes(idx)) color = "bg-green-500";
+                else if (pIndex === idx) color = "bg-red-500";
+                else if (active.includes(idx)) color = "bg-yellow-500";
 
-          if (sorted.includes(idx)) color = "bg-green-500";
-          else if (pIndex === idx) color = "bg-red-500";
-          else if (active.includes(idx)) color = "bg-yellow-500";
-
-          return (
-            <motion.div
-              key={item.id}
-              layout
-              transition={{ duration: 0.4 }}
-              className={`${color} w-10 rounded-t-xl flex items-end justify-center`}
-              style={{ height: `${item.value * 30}px` }}
-            >
-              <span className="text-zinc-900 mb-2 text-sm">{item.value}</span>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Controls */}
-      <div className="flex gap-5 w-[50vw]">
-        <button
-          className="px-10 py-4 flex-1 rounded-xl bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80"
-          onClick={generateArray}
-        >
-          Generate Array
-        </button>
-
-        <div className="flex-1 px-7 py-3 bg-zinc-800 rounded-xl flex flex-col items-center justify-center cursor-pointer">
-          <Slider
-            color="primary"
-            min={100}
-            max={1500}
-            step={100}
-            defaultValue={400}
-            orientation="horizontal"
-            size="md"
-            valueLabelDisplay="on"
-            onChange={(e,newSpeed) => setSpeed(newSpeed)}
-            value={speed}
-            valueLabelFormat={(val) => `${val} ms`}
-            sx={{
-              color: "#ffffff", // main track color
-              "& .MuiSlider-thumb": {
-                backgroundColor: "#ffffff",
-              },
-              "& .MuiSlider-track": {
-                backgroundColor: "#009688",
-              },
-              "& .MuiSlider-rail": {
-                backgroundColor: "#ffdede",
-              },
-            }}
-            slotProps={
-              {valueLabel:{
-                sx:{
-                  borderRadius:'5px'
-                }
-              }}
-            }
-          />
-          <p className="text-sm text-center">Animation Speed</p>
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    transition={{ duration: 0.4 }}
+                    className={`${color} w-8 lg:w-10 rounded-t-xl flex items-end justify-center`}
+                    style={{ height: `${item.value * 30}px` }}
+                  >
+                    <span className="text-zinc-900 mb-2 text-sm">
+                      {item.value}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+          {/* Sorting Name Heading */}
+          <h1 className="text-xl lg:text-3xl font-bold mb-10 text-center px-4">
+            Here's how <span className="text-teal-500">{algoNames[algo]}</span>{" "}
+            works
+          </h1>
         </div>
 
-        <button
-          className="flex-1 px-10 py-4 rounded-xl bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80"
-          onClick={startSorting}
-        >
-          Start Sorting
-        </button>
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-6 lg:gap-15 justify-center items-center w-full">
+          <button
+            className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
+            onClick={generateArray}
+          >
+            Generate Array
+          </button>
 
-        {/* <Button variant="solid">Hello world</Button>; */}
+          <button
+            className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
+            onClick={startSorting}
+          >
+            Start Sorting
+          </button>
+
+          <div className="flex flex-col items-center justify-center cursor-pointer w-50 lg:w-full">
+            <Slider
+              color="primary"
+              min={100}
+              max={1500}
+              step={100}
+              defaultValue={400}
+              orientation="horizontal"
+              size="md"
+              valueLabelDisplay="on"
+              onChange={(e, newSpeed) => setSpeed(newSpeed)}
+              value={speed}
+              valueLabelFormat={(val) => `${val} ms`}
+              sx={{
+                color: "#ffffff", // main track color
+                "& .MuiSlider-thumb": {
+                  backgroundColor: "#ffffff",
+                },
+                "& .MuiSlider-track": {
+                  backgroundColor: "#009688",
+                },
+                "& .MuiSlider-rail": {
+                  backgroundColor: "#ffdede",
+                },
+              }}
+              slotProps={{
+                valueLabel: {
+                  sx: {
+                    borderRadius: "5px",
+                  },
+                },
+              }}
+            />
+            <p className="text-sm text-center">Animation Speed</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Info & Code Display */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-10 w-full justify-center items-start">
+        {dispInfo && (
+          <div>
+            <div
+              ref={infoCodeRef}
+              className="bg-zinc-800 p-6 lg:p-10 rounded-4xl w-full max-w-lg"
+            >
+              <AlgoInfo data={data} />
+            </div>
+          </div>
+        )}
+
+        {dispCode && (
+          <AnimatePresence mode="wait">
+            <motion.pre
+              key={lang}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-lg"
+            >
+              <div
+                ref={infoCodeRef}
+                className="bg-zinc-800 p-6 lg:p-10 rounded-4xl w-full max-w-full overflow-x-auto"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-semibold text-white">Code</h3>
+                  <select
+                    name="language"
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value)}
+                    className="outline-none bg-zinc-700 px-3 py-2 rounded-lg text-sm"
+                  >
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="cplus">C++</option>
+                  </select>
+                </div>
+                <pre>
+                  <code className="text-green-400 text-xs lg:text-sm">{data.code[lang]}</code>
+                </pre>
+              </div>
+            </motion.pre>
+          </AnimatePresence>
+        )}
       </div>
     </div>
   );
