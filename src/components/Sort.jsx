@@ -263,7 +263,19 @@ const Sort = ({ algo, setAlgo }) => {
   return (
     <div className="min-h-screen w-full flex flex-col bg-zinc-900 text-white items-center justify-center px-4 py-10 lg:p-30 overflow-x-hidden">
       {/* Sort Switch Buttons */}
-      <div className="flex flex-wrap gap-5 lg:gap-10 justify-center items-center mb-10 lg:mb-20 mt-10 lg:mt-0">
+      <div className="mb-4 lg:hidden mt-6">
+        <select
+          value={algo}
+          className="outline-none w-full bg-zinc-800 px-4 py-3 rounded-full"
+          onChange={(e) => handleAlgoChange(e.target.value)}
+        >
+          <option value="quick">QuickSort</option>
+          <option value="merge">MergeSort</option>
+          <option value="bubble">BubbleSort</option>
+          <option value="heap">HeapSort</option>
+        </select>
+      </div>
+      <div className="hidden lg:flex flex-wrap gap-3 sm:gap-4 lg:gap-10 justify-center items-center mb-8 lg:mb-20 mt-10 lg:mt-0">
         <SwitchButton
           title="QuickSort"
           algo={algo}
