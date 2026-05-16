@@ -1,63 +1,75 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogo from "./SocialLogo";
 import insta from "../assets/insta.svg";
 import github from "../assets/github.svg";
 import stack from "../assets/stack.svg";
 
-const Hero = ({setCategory}) => {
+const Hero = () => {
   const categories = [
     {
       title: "Sorting",
       description:
         "Visualize sorting algorithms like Bubble, Merge, Quick and Heap Sort.",
       icon: "📊",
+      path:"/sorting"
     },
     {
       title: "Searching",
       description:
         "Understand Linear Search, Binary Search and more step-by-step.",
       icon: "🔍",
+      path:"/searching"
     },
     {
       title: "Linked List",
       description:
         "Explore insertion, deletion, traversal and node operations.",
       icon: "🔗",
+      path:"/linkedlist"
     },
     {
       title: "Stack",
       description: "Learn push, pop and stack-based problem solving visually.",
       icon: "📚",
+      path:"/stack"
     },
     {
       title: "Queue",
       description: "Visualize enqueue, dequeue and circular queue operations.",
       icon: "🚦",
+      path:"/queue"
     },
     {
       title: "Trees",
       description: "Traverse Binary Trees, BSTs and AVL Trees interactively.",
       icon: "🌳",
+      path:"/trees"
     },
     {
       title: "Graphs",
       description: "Run Dijkstra, BFS, DFS and shortest path algorithms live.",
       icon: "🕸️",
+      path:"/graphs"
     },
     {
       title: "DP",
       description: "Break down complex problems into smaller subproblems using Dynamic Programming.",
       icon: "⚡",
+      path:"/dp"
     },
   ];
 
+  // Category Search Function
   const [search, setSearch] = useState("");
   
   const filteredCards = categories.filter((item) => (
     item.title.toLowerCase().includes(search.toLowerCase()) 
     || item.description.toLowerCase().includes(search.toLowerCase())
   ));
+
+  // Navigation Handler
+  const navigate = useNavigate();
 
   return (
     <div className="text-white px-6 py-10 min-h-screen">
@@ -93,7 +105,7 @@ const Hero = ({setCategory}) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {filteredCards.map((category,idx) => (
             <button key={idx}
-            onClick={() => setCategory(category.title)}
+            onClick={() => navigate(category.path)}
             className="group text-left rounded-3xl p-10 cursor-pointer border border-slate-800 bg-zinc-800 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-500/20 hover:-translate-y-2 duration-200"
             >
               <div className="flex gap-6 mb-5 justify-start items-center">

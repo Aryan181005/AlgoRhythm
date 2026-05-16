@@ -4,6 +4,7 @@ import Slider from "@mui/joy/Slider";
 import SwitchButton from "./SwitchButton";
 import { IoCodeSlashSharp } from "react-icons/io5";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { IoIosArrowDown } from "react-icons/io";
 import { algoData } from "../data/algoData";
 import AlgoInfo from "./AlgoInfo";
 
@@ -260,13 +261,14 @@ const Sort = ({ algo, setAlgo }) => {
     generateArray();
   };
 
+
   return (
-    <div className="min-h-screen w-full flex flex-col bg-zinc-900 text-white items-center justify-center px-4 py-10 lg:p-30 overflow-x-hidden">
+    <div className="min-h-screen w-full flex flex-col bg-zinc-900 text-white items-center justify-center px-4 py-10 lg:p-20 overflow-x-hidden">
       {/* Sort Switch Buttons */}
-      <div className="mb-4 lg:hidden mt-6">
+      <div className="mb-4 lg:hidden mt-6 px-5 py-3 bg-zinc-800 rounded-full flex items-center justify-between">
         <select
           value={algo}
-          className="outline-none w-full bg-zinc-800 px-4 py-3 rounded-full"
+          className="appearance-none outline-none w-full"
           onChange={(e) => handleAlgoChange(e.target.value)}
         >
           <option value="quick">QuickSort</option>
@@ -274,6 +276,9 @@ const Sort = ({ algo, setAlgo }) => {
           <option value="bubble">BubbleSort</option>
           <option value="heap">HeapSort</option>
         </select>
+        <span className="inset-y-0 flex items-center pointer-events-none">
+          <IoIosArrowDown />
+        </span>
       </div>
       <div className="hidden lg:flex flex-wrap gap-3 sm:gap-4 lg:gap-10 justify-center items-center mb-8 lg:mb-20 mt-10 lg:mt-0">
         <SwitchButton
@@ -307,7 +312,7 @@ const Sort = ({ algo, setAlgo }) => {
       </div>
 
       {/* Visualizer */}
-      <div className="flex flex-col lg:flex-row items-center gap-5 lg:gap-15 w-full lg:w-auto">
+      <div className="flex flex-col items-center gap-5 lg:gap-15 w-full lg:w-auto">
         <div className="flex flex-col justify-center items-center">
           {/* Bars Container */}
           <div className="bg-zinc-800 rounded-2xl mb-10 w-full max-w-full overflow-x-auto">
@@ -327,7 +332,7 @@ const Sort = ({ algo, setAlgo }) => {
               </button>
             </div>
             {/* Array Bars */}
-            <div className="flex items-end gap-2 lg:gap-5 w-max min-w-full px-4 lg:px-30 min-h-75">
+            <div className="flex items-end gap-2 sm:gap-4 lg:gap-5 w-max min-w-full px-4 sm:px-30 min-h-75">
               {array.map((item, idx) => {
                 let color = "bg-teal-500";
 
@@ -352,29 +357,16 @@ const Sort = ({ algo, setAlgo }) => {
             </div>
           </div>
           {/* Sorting Name Heading */}
-          <h1 className="text-xl lg:text-3xl font-bold mb-10 text-center px-4">
+          <h1 className="text-xl lg:text-3xl font-bold text-center px-4">
             Here's how <span className="text-teal-500">{algoNames[algo]}</span>{" "}
             works
           </h1>
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row lg:flex-col gap-6 lg:gap-15 justify-center items-center w-full">
-          <button
-            className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
-            onClick={generateArray}
-          >
-            Generate Array
-          </button>
-
-          <button
-            className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
-            onClick={startSorting}
-          >
-            Start Sorting
-          </button>
-
-          <div className="flex flex-col items-center justify-center cursor-pointer w-50 lg:w-full">
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-6 lg:gap-10 justify-center items-center w-full">
+          {/* Slider */}
+          <div className="flex flex-col items-center justify-center cursor-pointer w-50 lg:w-100">
             <Slider
               color="primary"
               min={100}
@@ -383,7 +375,7 @@ const Sort = ({ algo, setAlgo }) => {
               defaultValue={400}
               orientation="horizontal"
               size="md"
-              valueLabelDisplay="on"
+              valueLabelDisplay="auto"
               onChange={(e, newSpeed) => setSpeed(newSpeed)}
               value={speed}
               valueLabelFormat={(val) => `${val} ms`}
@@ -408,6 +400,22 @@ const Sort = ({ algo, setAlgo }) => {
               }}
             />
             <p className="text-sm text-center">Animation Speed</p>
+          </div>
+          {/* Buttons */}
+          <div className="flex gap-3 lg:gap-6">
+            <button
+              className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
+              onClick={generateArray}
+            >
+              Generate Array
+            </button>
+
+            <button
+              className="px-6 lg:px-10 py-4 lg:py-6 rounded-full bg-zinc-800 cursor-pointer hover:bg-teal-500 hover:text-zinc-900 duration-100 active:scale-80 text-sm lg:text-base"
+              onClick={startSorting}
+            >
+              Start Sorting
+            </button>
           </div>
         </div>
       </div>
@@ -453,7 +461,9 @@ const Sort = ({ algo, setAlgo }) => {
                   </select>
                 </div>
                 <pre>
-                  <code className="text-green-400 text-xs lg:text-sm">{data.code[lang]}</code>
+                  <code className="text-green-400 text-xs lg:text-sm">
+                    {data.code[lang]}
+                  </code>
                 </pre>
               </div>
             </motion.pre>
