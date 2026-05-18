@@ -178,8 +178,14 @@ If you found this project helpful:
 ## 👨‍💻 Author
 
 **Aryan Singh**
+> *https://github.com/Aryan181005*
 
-> *(Add your GitHub / LinkedIn here)*
+---
+
+## 👨‍💻 UI/UX Consultant
+
+**Aditya Jha**
+> *https://github.com/Addy123452*
 
 ---
 

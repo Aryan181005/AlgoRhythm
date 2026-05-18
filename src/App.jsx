@@ -13,6 +13,7 @@ import SwitchButton from "./components/SwitchButton";
 import { Switch } from "react-aria-components";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import BarsLoader from "./components/BarsLoader";
 
 const PageWrapper = ({ children }) => {
   return (
@@ -29,13 +30,16 @@ const PageWrapper = ({ children }) => {
 
 const App = () => {
   const [algo, setAlgo] = useState("quick");
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation();
 
   return (
     <>
-    // Animated Routing
-      <AnimatePresence mode="wait">
+    {loading && <BarsLoader onFinish = {() => setLoading(false)}/>}
+    {!loading && (
+      // Animated Routing
+      <AnimatePresence>
         <Routes location={location} key={location.pathname}>
           <Route
             path="/"
@@ -111,6 +115,7 @@ const App = () => {
           />
         </Routes>
       </AnimatePresence>
+    )}
     </>
   );
 };

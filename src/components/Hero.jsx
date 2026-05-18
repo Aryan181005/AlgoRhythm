@@ -4,95 +4,139 @@ import SocialLogo from "./SocialLogo";
 import insta from "../assets/insta.svg";
 import github from "../assets/github.svg";
 import stack from "../assets/stack.svg";
+import AppLogo from "./AppLogo";
+import { motion } from "framer-motion";
 
 const Hero = () => {
   const categories = [
     {
-      title: "Sorting",
+      title: "Sort",
       description:
         "Visualize sorting algorithms like Bubble, Merge, Quick and Heap Sort.",
       icon: "📊",
-      path:"/sorting"
+      path: "/sorting",
     },
     {
-      title: "Searching",
+      title: "Search",
       description:
-        "Understand Linear Search, Binary Search and more step-by-step.",
+        "Explore searching techniques - Linear Search, Binary Search and more step-by-step.",
       icon: "🔍",
-      path:"/searching"
+      path: "/searching",
     },
     {
       title: "Linked List",
       description:
         "Explore insertion, deletion, traversal and node operations.",
       icon: "🔗",
-      path:"/linkedlist"
+      path: "/linkedlist",
     },
     {
       title: "Stack",
       description: "Learn push, pop and stack-based problem solving visually.",
       icon: "📚",
-      path:"/stack"
+      path: "/stack",
     },
     {
       title: "Queue",
       description: "Visualize enqueue, dequeue and circular queue operations.",
       icon: "🚦",
-      path:"/queue"
+      path: "/queue",
     },
     {
       title: "Trees",
       description: "Traverse Binary Trees, BSTs and AVL Trees interactively.",
       icon: "🌳",
-      path:"/trees"
+      path: "/trees",
     },
     {
       title: "Graphs",
       description: "Run Dijkstra, BFS, DFS and shortest path algorithms live.",
       icon: "🕸️",
-      path:"/graphs"
+      path: "/graphs",
     },
     {
       title: "DP",
-      description: "Break down complex problems into smaller subproblems using Dynamic Programming.",
+      description:
+        "Break down complex problems into smaller subproblems using Dynamic Programming.",
       icon: "⚡",
-      path:"/dp"
+      path: "/dp",
     },
   ];
 
   // Category Search Function
   const [search, setSearch] = useState("");
-  
-  const filteredCards = categories.filter((item) => (
-    item.title.toLowerCase().includes(search.toLowerCase()) 
-    || item.description.toLowerCase().includes(search.toLowerCase())
-  ));
+
+  const filteredCards = categories.filter(
+    (item) =>
+      item.title.toLowerCase().includes(search.toLowerCase()) ||
+      item.description.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  // Bar Loader
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setLoaded(true), 2000);
+  }, []);
+
+  // Logo Zoom Effect States
+  const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    const alreadyPlayed = sessionStorage.getItem("introPlayed");
+
+    if (!alreadyPlayed) {
+      setShowIntro(true);
+      sessionStorage.setItem("introPlayed", "true");
+
+      const t = setTimeout(() => {
+        setShowIntro(false);
+      }, 1800);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
   // Navigation Handler
   const navigate = useNavigate();
 
   return (
-    <div className="text-white px-6 py-10 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Hero Section */}
-        <div className="text-center mb-14">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-5">
-            Algo Visualizer
-          </h1>
-          <p className="text-slate-300 text-lg md:text-xl mx-auto max-w-3xl">
-            Learn algorithms and data structures interactively with beautiful
-            animations and real-time visualizations.
-          </p>
+    <div className="text-white px-6 py-20 min-h-screen relative">
+      {/* App Logo Initial Position as Hero */}
+      {showIntro && (
+        <div className="fixed inset-0 pointer-events-none">
+          <motion.div
+            initial={{ scale: 2, opacity: 1 }}
+            animate={{ scale: 100, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
+            <AppLogo />
+          </motion.div>
         </div>
+      )}
+      <motion.h1
+        initial={{ opacity: 0, letterSpacing: "30px" }}
+        animate={{ opacity: 1, letterSpacing: "10px" }}
+        transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
+        className="text-center text-3xl lg:text-5xl font-black mb-15"
+      >
+        NEXALGO
+      </motion.h1>
 
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 0.8 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto"
+      >
         {/* Search Bar */}
         <div className="mx-auto mb-15 flex flex-col lg:flex-row gap-5 justify-between items-center">
-          <input 
+          <input
             type="text"
             placeholder="Search algorithms..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-3/5 lg:w-100 bg-slate-800/70 px-5 py-4 rounded-full text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg focus:w-full lg:focus:w-1/2 duration-300"
+            className="w-4/5 lg:w-100 bg-slate-800/70 px-5 py-4 rounded-full text-lg outline-none border border-slate-700 focus:border-cyan-600 shadow-lg focus:w-full lg:focus:w-1/2 duration-300"
           />
           <div className="flex justify-evenly items-center gap-5 lg:gap-10 cursor-pointer">
             <SocialLogo title={github} link="https://github.com/Aryan181005" />
@@ -103,12 +147,13 @@ const Hero = () => {
 
         {/* Category Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {filteredCards.map((category,idx) => (
-            <button key={idx}
-            onClick={() => navigate(category.path)}
-            className="group text-left rounded-3xl p-10 cursor-pointer border border-slate-800 bg-zinc-800 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-500/20 hover:-translate-y-2 duration-200"
+          {filteredCards.map((category, idx) => (
+            <button
+              key={idx}
+              onClick={() => navigate(category.path)}
+              className="group text-left rounded-3xl p-10 cursor-pointer border border-slate-800 bg-zinc-800 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-500/20 hover:-translate-y-2 duration-200"
             >
-              <div className="flex gap-6 mb-5 justify-start items-center">
+              <div className="flex gap-6 mb-5 justify-start items-center min-w-0">
                 <div className="text-3xl group-hover:scale-110 transition-transform duration-200">
                   {category.icon}
                 </div>
@@ -116,17 +161,16 @@ const Hero = () => {
                   {category.title}
                 </h2>
               </div>
-              <p className="text-base mb-4">
-                {category.description}
-              </p>
+              <p className="text-base mb-4">{category.description}</p>
               <div className="group-hover:text-blue-400 duration-200 relative">
-                <span className="absolute opacity-0 group-hover:opacity-100">Explore → </span>
+                <span className="absolute opacity-0 group-hover:opacity-100">
+                  Explore →{" "}
+                </span>
               </div>
             </button>
           ))}
         </div>
-
-      </div>
+      </motion.div>
     </div>
   );
 };
