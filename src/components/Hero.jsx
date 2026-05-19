@@ -75,30 +75,18 @@ const Hero = () => {
   // Bar Loader
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 1600);
+    const t = setTimeout(() => setLoaded(true), 500);
   }, []);
 
   // Navigation Handler
   const navigate = useNavigate();
 
   return (
-    <div className="text-white px-6 py-20 min-h-screen relative">
-      {/* App Logo Zoom Animation */}
-      <div className="fixed inset-0 pointer-events-none">
-        <motion.div
-          initial={{ scale: 2, opacity: 1 }}
-          animate={{ scale: 100, opacity: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        >
-          <AppLogo />
-        </motion.div>
-      </div>
+    <div className="text-white px-5 py-10 sm:px-6 lg:px-10 lg:py-20 min-h-screen relative">
       <motion.h1
-        initial={{ opacity: 0, letterSpacing: "30px" }}
-        animate={{ opacity: 1, letterSpacing: "10px" }}
-        transition={{ duration: 1, delay: 1.3, ease: "easeInOut" }}
+        initial={{ opacity: 0, letterSpacing: "50px" }}
+        animate={{ opacity: 1, letterSpacing: "20px" }}
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
         className="text-center text-3xl lg:text-5xl font-black mb-15"
       >
         NEXALGO
@@ -108,7 +96,7 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 0.8 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
         className="max-w-7xl mx-auto"
       >
         {/* Search Bar */}
