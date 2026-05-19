@@ -75,24 +75,7 @@ const Hero = () => {
   // Bar Loader
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 2000);
-  }, []);
-
-  // Logo Zoom Effect States
-  const [showIntro, setShowIntro] = useState(true);
-
-  useEffect(() => {
-    const alreadyPlayed = sessionStorage.getItem("introPlayed");
-
-    if (!alreadyPlayed) {
-      setShowIntro(true);
-      sessionStorage.setItem("introPlayed", "true");
-
-      const t = setTimeout(() => {
-        setShowIntro(false);
-      }, 1800);
-      return () => clearTimeout(t);
-    }
+    const t = setTimeout(() => setLoaded(true), 1600);
   }, []);
 
   // Navigation Handler
@@ -100,24 +83,22 @@ const Hero = () => {
 
   return (
     <div className="text-white px-6 py-20 min-h-screen relative">
-      {/* App Logo Initial Position as Hero */}
-      {showIntro && (
-        <div className="fixed inset-0 pointer-events-none">
-          <motion.div
-            initial={{ scale: 2, opacity: 1 }}
-            animate={{ scale: 100, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          >
-            <AppLogo />
-          </motion.div>
-        </div>
-      )}
+      {/* App Logo Zoom Animation */}
+      <div className="fixed inset-0 pointer-events-none">
+        <motion.div
+          initial={{ scale: 2, opacity: 1 }}
+          animate={{ scale: 100, opacity: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <AppLogo />
+        </motion.div>
+      </div>
       <motion.h1
         initial={{ opacity: 0, letterSpacing: "30px" }}
         animate={{ opacity: 1, letterSpacing: "10px" }}
-        transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
+        transition={{ duration: 1, delay: 1.3, ease: "easeInOut" }}
         className="text-center text-3xl lg:text-5xl font-black mb-15"
       >
         NEXALGO

@@ -332,7 +332,7 @@ const Sort = ({ algo, setAlgo }) => {
               </button>
             </div>
             {/* Array Bars */}
-            <div className="flex items-end gap-2 sm:gap-4 lg:gap-5 w-max min-w-full px-4 sm:px-30 min-h-75">
+            <div className="flex items-end gap-2 sm:gap-4 lg:gap-5 w-max min-w-full px-4 sm:px-30 min-h-75 overflow-hidden">
               {array.map((item, idx) => {
                 let color = "bg-teal-500";
 
